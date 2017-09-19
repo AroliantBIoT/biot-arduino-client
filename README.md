@@ -16,9 +16,9 @@ byte ip[] = { 192, 168, 100, 177 };
 ```
 Declare server ip and port
 ```cpp
-    byte server[] =  { 192, 168 , 100 , 10 };
-    int port = 5001 ;
-    String token = "12345"; //token generated from BIoT Dashboard
+ byte server[] =  { 192, 168 , 100 , 10 };
+ int port = 5001 ;
+ String token = "12345"; //token generated from BIoT Dashboard
 ```
 In the setup function set the baud rate to 9600 .
 ```cpp
@@ -47,7 +47,8 @@ if(client.available()){
      Serial.print("Device ID"); Serial.println(client.getDeviceID(message));  // Parsing the device id
      Serial.print("Param"); Serial.println(client.getParamName(message));     // Parsing the parameter name
      Serial.print("Value");  Serial.println(client.getParamValue(message));   // Parsing the parameter value
-      
+  }
+}    
 ```
 ### Sample Program to Listen Events from Server:
 
@@ -91,13 +92,8 @@ void loop() {
      Serial.print("Device ID"); Serial.println(client.getDeviceID(message));  
      Serial.print("Param"); Serial.println(client.getParamName(message));
      Serial.print("Value"); Serial.println(client.getParamValue(message)); 
-      
-    }
-
-    
+      }
   }
-
-
 }
 ```
 
