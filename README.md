@@ -1,4 +1,4 @@
-# biot-arduino-client
+# BIoT-Arduino-Client
 Download the BIoTClient library and include in the project.
 ```cpp
 #include <BIoTClient.h>
