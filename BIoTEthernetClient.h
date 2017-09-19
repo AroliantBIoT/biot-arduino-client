@@ -1,11 +1,11 @@
-#ifndef _BIOTCLIENT_H
-#define _BIOTCLIENT_H
+#ifndef _BIOTETHERNETCLIENT_H
+#define _BIOTETHERNETCLIENT_H
 
 #include <SPI.h>
 #include <Ethernet.h>
 
 
-class BIoTClient{
+class BIoTEthernetClient{
 
 public:
 	EthernetClient client;
