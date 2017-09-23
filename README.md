@@ -1,3 +1,8 @@
+[![GitHub version](https://img.shields.io/github/release/aroliantbiot/biot-arduino-client.svg)](https://github.com/aroliantbiot/biot-arduino-client/releases/latest)
+[![GitHub download](https://img.shields.io/github/downloads/aroliantbiot/biot-arduino-client/total.svg)](https://github.com/aroliantbiot/biot-arduino-client/releases/latest)
+[![GitHub stars](https://img.shields.io/github/stars/aroliantbiot/biot-arduino-client.svg)](https://github.com/aroliantbiot/biot-arduino-client)
+[![GitHub issues](https://img.shields.io/github/issues/aroliantbiot/biot-arduino-client.svg)](https://github.com/aroliantbiot/biot-arduino-client/issues)
+
 # BIoT Arduino Client
 
 Download this Repository and include in the project.
