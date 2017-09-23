@@ -22,6 +22,10 @@ public:
 
 	}
 
+	bool connected(){
+		return client.connected();
+	}
+
 	bool available(){
 		return client.available();
 	}
@@ -112,8 +116,12 @@ public:
 		message += ",";
 		message += value;
 		message.getBytes(buff,50);
-		client.write(buff);
-		return true;
+		if(client.connected()){
+			client.write(buff);
+			return true;
+		}
+		
+		return false;
 	}
 
 };
