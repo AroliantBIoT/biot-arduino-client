@@ -42,63 +42,72 @@ In the loop function listen for events from the server
 
 
 ```cpp
-if(client.available()){
+  
+if (client.available()) {
 
-    String message = client.readString(); //Get the message from server 
+    BIoTMessage message(client.readString()); //Get the message from server 
 
-    if(client.getEventName(message) == client.EVENT_UPDATE){ // Checking if the event is an update event
-      Serial.println("Update Event Received");
+    if (message.getEventName() == BIOT_EVENT_UPDATE &&
+        message.getDeviceID() == 1 && 
+        message.getParamName() == "status" ) { // Checking update event, device id & param name
+      
+      Serial.println("Update Event => device id : 1, param : status");
+      Serial.print(message.getLog()); // Printing the message from Server
+      
+    }
 
-     Serial.print("Device ID"); Serial.println(client.getDeviceID(message));  // Parsing the device id
-     Serial.print("Param"); Serial.println(client.getParamName(message));     // Parsing the parameter name
-     Serial.print("Value");  Serial.println(client.getParamValue(message));   // Parsing the parameter value
   }
-}    
+
+client.run(server,port,token); //Reconnecting if not connected
 ```
 ### Sample Program to Listen Events from Server:
 
 ```cpp
 #include <BIoTEthernetClient.h>
+
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = { 192, 168, 100, 177 };
+
 byte server[] =  { 192, 168 , 100 , 10 };
 int port = 5001 ;
 String token = "12345";
 
 BIoTEthernetClient client;
 
+int led = 3;
+
 void setup() {
-  // put your setup code here, to run once:
-
   Serial.begin(9600);
-
   client.begin(ip, mac);
 
   Serial.println("connecting...");
 
-  if (client.connect(server, port, token)) {
+  client.connect(server, port, token);
 
-    Serial.println("connected");
-
-  }
+  pinMode(led, OUTPUT);
 
 }
 
 
 void loop() {
+  if (client.available()) {
 
-  if(client.available()){
+    BIoTMessage message(client.readString());
 
-    String message = client.readString();
+    if (message.getEventName() == BIOT_EVENT_UPDATE &&
+        message.getDeviceID() == 1 && 
+        message.getParamName() == "status" ) { // Checking update event, device id & param name
+      
+      Serial.println("Update Event => device id : 1, param : status");
+      Serial.print(message.getLog());
+      
+    }
 
-    if(client.getEventName(message) == client.EVENT_UPDATE){
-      Serial.println("Update Event Received");
 
-     Serial.print("Device ID"); Serial.println(client.getDeviceID(message));  
-     Serial.print("Param"); Serial.println(client.getParamName(message));
-     Serial.print("Value"); Serial.println(client.getParamValue(message)); 
-      }
   }
+
+  client.run(server,port,token); //Reconnecting if not connected
+
 }
 ```
 
@@ -151,7 +160,7 @@ void loop() {
 
     if (currentState == false) {
       currentState = true;
-      client.sendUpdate(1, "status", "true");
+      client.sendUpdate(1, "status", BIOT_TRUE);
       Serial.println("LED ON");
     }
 
@@ -162,11 +171,51 @@ void loop() {
 
     if (currentState == true) {
       currentState = false;
-      client.sendUpdate(1, "status", "false");
+      client.sendUpdate(1, "status", BIOT_FALSE);
      
       Serial.println("LED OFF");
     }
   }
 
 }
+```
+
+### Sending update to Server
+
+```cpp
+client.sendUpdate(int device_id, String param, String value)
+```
+
+### BIoT Message 
+It is used to parse the message from the server
+
+##### Creating a message 
+
+```cpp 
+BIoTMessage message(client.readString())
+```
+
+##### Getting Event Name
+
+```cpp 
+message.getEventName() //returns a String
+```
+
+
+##### Getting Device ID 
+
+```cpp
+message.getDeviceID() //returns an int
+```
+
+##### Getting Parameter Name
+
+```cpp 
+message.getParamName() //returns a String
+```
+
+##### Getting Parameter Value 
+
+```cpp 
+message.getParamValue() //returns a String
 ```
