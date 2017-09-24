@@ -44,7 +44,7 @@ public:
 
 	void sendUpdate(int deviceID, String param, String value){
 		char buff[50];
-		String message = "param:update|";
+		String message = "device:set:state|";
 		message += String(deviceID);
 		message += ",";
 		message += param;
