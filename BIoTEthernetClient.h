@@ -3,22 +3,25 @@
 
 #include <SPI.h>
 #include <Ethernet.h>
-
+#include <BIoT.h>
+#include <BIoTMessage.h>
 
 class BIoTEthernetClient{
 
 public:
 	EthernetClient client;
-	String EVENT_UPDATE = "param:update";
 	int count = 0;
+	byte server[];
+	int port;
 
 	void begin(const byte ip[], const byte mac[]){
 		Ethernet.begin(mac,ip);
 	}
 
-	bool connect(const byte server[], const int port, const String token){
-
-		client.connect(server,port);
+	bool connect(const byte _server[], const int _port, const String token){
+		memcpy(server, _server,sizeof( _server));
+		port = _port;
+		client.connect(_server,_port);
 
 	}
 
@@ -37,75 +40,7 @@ public:
 
 	String readString(){
 		return client.readString();
-	}
-
-	String getEventName(String message){
-		char st[50];
-    	message.toCharArray(st, 50);
-		count = 0; 
-		char *ch;
-	    ch = strtok(st, "|");
-	    while (ch != NULL)
-	    {
-	      String str(ch);
-	      if (count == 0 ) {
-	      	return str;
-	      }
-	      count++;
-	      ch = strtok(NULL, ",");
-	  	}
-	}
-
-	int getDeviceID(String message){
-		char st[50];
-    	message.toCharArray(st, 50);
-		count = 0; 
-		char *ch;
-	    ch = strtok(st, "|");
-	    while (ch != NULL)
-	    {
-	      String str(ch);
-	      if (count == 1 ) {
-	      	return str.toInt();
-	      }
-	      count++;
-	      ch = strtok(NULL, ",");
-	  	}
-	}
-
-	String getParamName(String message){
-		char st[50];
-    	message.toCharArray(st, 50);
-		count = 0; 
-		char *ch;
-	    ch = strtok(st, "|");
-	    while (ch != NULL)
-	    {
-	      String str(ch);
-	      if (count == 2 ) {
-	      	return str;
-	      }
-	      count++;
-	      ch = strtok(NULL, ",");
-	  	}
-	}
-
-	String getParamValue(String message){
-		char st[50];
-    	message.toCharArray(st, 50);
-		count = 0; 
-		char *ch;
-	    ch = strtok(st, "|");
-	    while (ch != NULL)
-	    {
-	      String str(ch);
-	      if (count == 3 ) {
-	      	return str;
-	      }
-	      count++;
-	      ch = strtok(NULL, ",");
-	  	}
-	}
+	}	
 
 	void sendUpdate(int deviceID, String param, String value){
 		char buff[50];
@@ -122,6 +57,15 @@ public:
 		}
 		
 		return false;
+	}
+
+	void run(){
+		if(client.connected()){
+			
+		}else{
+			//Connect Client with the details provided
+			client.connect(server,port);
+		}
 	}
 
 };
