@@ -34,7 +34,7 @@ void loop() {
         message.getParamName() == "status" ) { // Checking update event, device id & param name
       
       Serial.println("Update Event => device id : 1, param : status");
-      Serial.println(message.getLog());
+      Serial.print(message.getLog());
 
       if ( message.getParamValue() == BIOT_TRUE ) {
         Serial.println("Turning ON LED");
@@ -48,6 +48,6 @@ void loop() {
 
   }
 
-  client.run();
+  client.run(server,port,token); //Reconnecting if not connected
 
 }

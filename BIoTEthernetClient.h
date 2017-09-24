@@ -59,7 +59,7 @@ public:
 		return false;
 	}
 
-	void run(){
+	void run(const byte server[], const int port, const String token){
 		if(client.connected()){
 			
 		}else{
@@ -68,6 +68,7 @@ public:
 		}
 	}
 
+	
 };
 
 
