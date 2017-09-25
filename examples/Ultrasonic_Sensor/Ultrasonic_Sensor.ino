@@ -7,21 +7,19 @@ int port = 5001 ;
 String token = "12345";
 
 BIoTEthernetClient client;
-const int trigPin = 9;
-const int echoPin = 10;
+const int trigPin = 7;
+const int echoPin = 8;
 
 long duration;
 int distance;
 void setup() {
-  Serial.begin(9600);
-  client.begin(ip, mac);
-
-  Serial.println("connecting...");
-
-  client.connect(server, port, token);
-
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+ Serial.begin(9600);
+client.begin(ip, mac);
+Serial.println("connecting...");
+client.connect(server, port, token);
+Serial.println("connected");
+pinMode(trigPin, OUTPUT);
+pinMode(echoPin, INPUT);
 }
 void loop() {
   
@@ -49,5 +47,5 @@ void loop() {
     Serial.println("Client not connected");
     client.connect(server, port, token);
   }
-  
+ client.run(server,port,token);
 }

@@ -8,56 +8,46 @@ String token = "12345";
 
 BIoTEthernetClient client;
 
-int ledPin = 13;
-int pirPin = 6;
+int ledPin = 5;
+int pirPin = 10;
 int val = 0;
 bool pirState = LOW;
 
-void setup() 
+void setup()
 {
-    Serial.begin(57600);
-  
+  Serial.begin(9600);
   client.begin(ip, mac);
-
-    Serial.println("connecting...");
-
-    if (client.connect(server, port, token)) {
-
-    Serial.println("connected");
-
-  pinMode (ledPin,OUTPUT);
+  Serial.println("connecting...");
+  client.connect(server, port, token);
+  Serial.println("connected");
+  pinMode (ledPin, OUTPUT);
   pinMode (pirPin, INPUT);
 }
-}
-void loop () 
+
+void loop ()
 {
-  if (client.available()) {
-      String message = client.readString();
+  if (client.connected()) {
+    val = digitalRead(pirPin);
+    Serial.println(val);
+
+    if (val == HIGH) {
+      digitalWrite(ledPin, HIGH);
+
+      if (pirState == LOW) {
+        Serial.println("Motion detected!");
+        pirState = HIGH;
+        client.sendUpdate(1, "pir", "true");
+
+      }
+    }
+    else {
+      digitalWrite(ledPin, LOW);
+      if (pirState == HIGH) {
+        pirState = LOW;
+        client.sendUpdate(1, "pir", "false");
+      }
+
+      client.run(server, port, token);
+    }
   }
-
-  val = digitalRead(pirPin);
-  Serial.println(val);
-
-if (val == HIGH){
-  digitalWrite(ledPin,HIGH);
-
-if (pirState == LOW) {
-  Serial.println("Motion detected!");
-     
-    pirState = HIGH;
-      client.sendUpdate(1, "status", "true");
-     
-   }
 }
-else{
-digitalWrite(ledPin,LOW);
-if (pirState == HIGH) {
-     pirState = LOW;
-      client.sendUpdate(1, "status", "false");
-     
-   
-}
-
-}
-}
-

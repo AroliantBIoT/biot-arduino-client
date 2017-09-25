@@ -8,59 +8,46 @@ String token = "12345";
 
 BIoTEthernetClient client;
 
-int buz=7;
-int buttonPin = 4;
-int buttonState=0;
-bool currentState=LOW;
+int buzzer = 7;
+int buttonPin = 3;
+int buttonState = 0;
+bool currentState = LOW;
+bool buzzerState=LOW;
 void setup() {
-  Serial.begin(9600);
-
-    client.begin(ip, mac);
-
-    Serial.println("connecting...");
-
-    if (client.connect(server, port, token)) {
-
-    Serial.println("connected");
-    }
- 
-  pinMode(buz, OUTPUT);
-   pinMode(buttonPin, INPUT);
+Serial.begin(9600);
+client.begin(ip, mac);
+Serial.println("connecting...");
+client.connect(server, port, token);
+Serial.println("connected");
+pinMode(buzzzer, OUTPUT);
+pinMode(buttonPin, INPUT);
 }
 
 
 void loop() {
-  if (client.available()) {
-      String message = client.readString();
+  if (client.connected()) {
+    buttonState = digitalRead(buttonPin);
   }
-
-  
-  buttonState = digitalRead(buttonPin);   
- if (buttonState == HIGH) {            //check if the pushbutton is pressed
-    //if it is, the buttonState is HIGH
-    digitalWrite(buz, HIGH);        //turn LED on
-    
-
-    if (currentState == false) {
+  if (buttonState == HIGH) {
+    digitalWrite(buzzer, HIGH);
+  if (currentState == false) {
       currentState = true;
-      client.sendUpdate(1, "status", "true");
+      client.sendUpdate(1, "buzzer", "true");
       Serial.println("buzzzz");
     }
-
-
-
   }
+
   else {
     digitalWrite(buz, LOW);
 
     if (currentState == true) {
       currentState = false;
-      client.sendUpdate(1, "status", "false");
-     
+      client.sendUpdate(1, "buzzer", "false");
+
       Serial.println("buzzzz");
     }
   }
+  client.run(server,port,token);
 
 }
- 
 
