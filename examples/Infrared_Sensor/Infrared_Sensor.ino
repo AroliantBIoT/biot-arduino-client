@@ -9,9 +9,9 @@ String token = "12345";
 BIoTEthernetClient client;
 
 int ledPin = 13;
-int pirPin = 6;
+int irPin = 6;
 int val = 0;
-bool pirState = LOW;
+bool irState = LOW;
 
 void setup() 
 {
@@ -26,7 +26,7 @@ void setup()
     Serial.println("connected");
 
   pinMode (ledPin,OUTPUT);
-  pinMode (pirPin, INPUT);
+  pinMode (irPin, INPUT);
 }
 }
 void loop () 
@@ -35,7 +35,7 @@ void loop ()
       String message = client.readString();
   }
 
-  val = digitalRead(pirPin);
+  val = digitalRead(irPin);
   Serial.println(val);
 
 if (val == HIGH){
