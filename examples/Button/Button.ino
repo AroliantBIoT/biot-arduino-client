@@ -19,7 +19,7 @@ client.begin(ip, mac);
 Serial.println("connecting...");
 client.connect(server, port, token);
 Serial.println("connected");
-pinMode(buzzzer, OUTPUT);
+pinMode(ledpin, OUTPUT);
 pinMode(buttonPin, INPUT);
 }
 
@@ -33,18 +33,18 @@ void loop() {
   if (ledState == false) {
       ledState = true;
       client.sendUpdate(1, "ledpin", "true");
-      Serial.println("buzzzz");
+      Serial.println("button is pressed led on");
     }
   }
 
   else {
-    digitalWrite(buz, LOW);
+    digitalWrite(ledpin, LOW);
 
     if (ledState == true) {
       ledState = false;
       client.sendUpdate(1, "ledpin", "false");
 
-      Serial.println("buzzzz");
+      Serial.println("led off");
     }
   }
   client.run(server,port,token);
